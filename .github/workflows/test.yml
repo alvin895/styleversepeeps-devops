@@ -43,5 +43,4 @@ jobs:
           context: .
           push: ${{ github.event_name == 'push' }}
           tags: |
-            ghcr.io/alvin895/styleversepeeps-app:latest
-            ghcr.io/alvin895/styleversepeeps-app:${{ github.sha }}
+            ghcr.io/alvin895/styleversepeeps-app:dev-${{ github.sha }}
