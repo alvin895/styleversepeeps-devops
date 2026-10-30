@@ -1,3 +1,7 @@
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
 
 def hitung_harga(harga, diskon):
     if harga < 0:
@@ -10,11 +14,27 @@ def hitung_harga(harga, diskon):
     return harga_akhir
 
 
-if __name__ == "__main__":
+@app.route("/")
+def home():
+    return jsonify({
+        "aplikasi": "StyleversePeeps",
+        "status": "running"
+    })
+
+
+@app.route("/harga")
+def harga():
     harga_awal = 100000
     diskon = 20
 
     hasil = hitung_harga(harga_awal, diskon)
-    print(f"Harga awal: Rp{harga_awal}")
-    print(f"Diskon: {diskon}%")
-    print(f"Harga akhir: Rp{hasil:.0f}")
+
+    return jsonify({
+        "harga_awal": harga_awal,
+        "diskon_persen": diskon,
+        "harga_akhir": hasil
+    })
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
