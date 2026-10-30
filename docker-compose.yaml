@@ -1,0 +1,4 @@
+services:
+  app:
+    image: ghcr.io/alvin895/styleversepeeps-app:dev-921dd32
+    container_name: styleversepeeps-app
