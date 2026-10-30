@@ -6,8 +6,12 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
-  test:
+  test-and-publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,5 +29,19 @@ jobs:
       - name: Run tests
         run: python -m pytest -v
 
-      - name: Build Docker image
-        run: docker build -t styleversepeeps-app:${{ github.sha }} .
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ github.event_name == 'push' }}
+          tags: |
+            ghcr.io/alvin895/styleversepeeps-app:latest
+            ghcr.io/alvin895/styleversepeeps-app:${{ github.sha }}
