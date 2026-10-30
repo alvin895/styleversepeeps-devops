@@ -21,3 +21,8 @@ terraform.tfvars.json
 
 # Ansible sensitive files
 vault-password-file
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
